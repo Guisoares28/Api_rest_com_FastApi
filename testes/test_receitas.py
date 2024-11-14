@@ -1,12 +1,9 @@
-import pytest
 from fastapi.testclient import TestClient
-from pydantic_core.core_schema import is_instance_schema
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import get_db, Base
 from app.main import app
-from app.schemas.receita_schema import ReceitaResponse
 
 client = TestClient(app)
 

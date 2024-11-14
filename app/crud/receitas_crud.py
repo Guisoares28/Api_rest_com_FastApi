@@ -1,11 +1,13 @@
-from sqlalchemy import extract, and_
+from datetime import datetime
+
+from sqlalchemy import and_, Extract
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
-from app.exception.receita_exception import ReceitaJaCadastrada
+from app.exception.receita_exception import ReceitaException
 from app.models.receita import Receita
 from app.schemas.receita_schema import ReceitaCreate
-from datetime import datetime
+
 
 def pegar_todas_as_receitas(db:Session):
     return db.query(Receita).all()
@@ -17,9 +19,12 @@ def pegar_receita_por_id(db:Session, receita_id):
     return receita_existente
 
 def salvar_receita(db:Session, receita:ReceitaCreate):
-    receita_existente = db.query(Receita).filter_by(descricao=receita.descricao).first()
-    if receita_existente and datetime.strptime(str(receita_existente.data),"%Y-%m-%d").month == receita.data.month:
-        raise ReceitaJaCadastrada("Receita já cadastrada com essa descrição neste Mês")
+    receita_existente = db.query(Receita).filter(and_(
+        Receita.descricao == receita.descricao,
+        Extract("month", Receita.data) == receita.data.month
+    )).first()
+    if receita_existente:
+        raise ReceitaException("Receita já Cadastrada")
     new_receita = Receita(
         descricao = receita.descricao,
         valor = receita.valor,
@@ -39,7 +44,7 @@ def atualizar_receita(db:Session, receita_id: int, receita:ReceitaCreate):
     .first()
     )
     if receita_encontrada and datetime.strptime(str(receita_encontrada.data),"%Y-%m-%d").month == receita.data.month:
-        raise ReceitaJaCadastrada("Receita já cadastrada com essa descrição neste Mês")
+        raise ReceitaException("Receita já cadastrada com essa descrição neste Mês")
 
     receita_existente.descricao = receita.descricao
     receita_existente.valor = receita.valor
