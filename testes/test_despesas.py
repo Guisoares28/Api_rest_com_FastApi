@@ -70,4 +70,3 @@ def test_deve_retornar_uma_despesa_por_id():
     assert response_two.json()["valor"] == 20000.00
     assert response_two.json()["data"] == "2024-11-13"
 
-

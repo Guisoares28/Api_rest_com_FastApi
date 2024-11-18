@@ -97,7 +97,7 @@ def test_deve_atualizar_receita():
     assert att_response.json()["descricao"] == "Receita atualizada de teste"
     assert att_response.json()["valor"] == 10000.00
 
-def test_deve_deletar_uma_conta_pelo_id():
+def test_deve_deletar_uma_receita_pelo_id():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
@@ -113,3 +113,36 @@ def test_deve_deletar_uma_conta_pelo_id():
 
     assert delete_response.status_code == 200
     assert delete_response.json()["descricao"] == "Receita teste"
+
+
+
+def test_deve_retornar_um_erro_ao_tentar_atualizar_a_conta_com_a_mesma_descricao_no_mesmo_mes():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    data = {
+        "descricao": "Receita teste erro",
+        "valor": 500.00,
+        "data": "2024-11-13"
+    }
+    response = client.post("/receitas", json=data)
+    data_two = {
+        "descricao": "Receita teste novamente",
+        "valor": 500.00,
+        "data": "2024-11-13"
+    }
+
+    response_two = client.post("/receitas", json=data_two)
+
+    id_receita = response.json()["id"]
+    new_data = {
+        "descricao": "Receita teste novamente",
+        "valor": 10000.00,
+        "data": "2025-11-13"
+    }
+
+    att_response = client.put(f"/receitas/{id_receita}", json=new_data)
+    assert att_response.json()["detail"] == "400: Receita já cadastrada com essa descrição nesse mês"
+    assert att_response.status_code == 400
+
+
+

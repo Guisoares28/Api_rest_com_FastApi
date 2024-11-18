@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.crud.despesas_crud import criar_nova_despesa, pegar_todas_as_despesas, buscar_despesa_por_id, \
-    atualizar_despesa_por_id
+    atualizar_despesa_por_id, deletar_despesa_por_id
 from app.database import get_db
 from app.exception.despesa_exception import DespesaException
 from app.schemas.despesa_schema import DespesaCreate
@@ -29,3 +29,10 @@ def pegar_despesa_por_id(receita_id:int, db:Session = Depends(get_db)):
 @router.put("/despesas/{receita_id}", response_model=ReceitaResponse, status_code=200)
 def atualizar_despesa(despesa_id:int, despesa:DespesaCreate, db:Session = Depends(get_db)):
     return atualizar_despesa_por_id(despesa_id=despesa_id, despesa=despesa, db=db)
+
+@router.delete("/despesas/{despesa_id}", response_model=ReceitaResponse, status_code=200)
+def deletar_despesa(despesa_id:int, db:Session = Depends(get_db)):
+    try:
+        return deletar_despesa_por_id(despesa_id=despesa_id, db=db)
+    except DespesaException as e:
+        HTTPException(status_code=400, detail=str(e))

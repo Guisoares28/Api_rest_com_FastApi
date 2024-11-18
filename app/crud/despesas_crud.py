@@ -29,17 +29,30 @@ def pegar_todas_as_despesas(db:Session):
     return db.query(Despesa).all()
 
 def buscar_despesa_por_id(despesa_id, db:Session):
-    return db.query(Despesa).filter_by(id=despesa_id)
+    return db.query(Despesa).get(despesa_id)
 
 def atualizar_despesa_por_id(despesa_id:int, despesa:DespesaCreate, db:Session):
-    receita_att = db.query(Despesa).filter_by(id=despesa_id).first()
-    if not receita_att:
+    despesa_encontrada = db.query(Despesa).get(despesa_id)
+    if not despesa_encontrada:
         raise DespesaException("Receita não encontrada")
-    receita_att.descricao = despesa.descricao
-    receita_att.valor = despesa.valor
-    receita_att.data = despesa.data
-    db.add(receita_att)
+    despesa_encontrada.descricao = despesa.descricao
+    despesa_encontrada.valor = despesa.valor
+    despesa_encontrada.data = despesa.data
+    despesa_duplicada = db.query(Despesa).filter(and_(
+        despesa_id != Despesa.id,
+        despesa.descricao == Despesa.descricao,
+        despesa.data.month == Extract("month", Despesa.data)
+    )).first()
+    if despesa_duplicada:
+        raise DespesaException("Despesa já cadastrada com está descrição nesse mesmo Mês")
     db.commit()
-    db.refresh(receita_att)
-    return receita_att
+    db.refresh(despesa_encontrada)
+    return despesa_encontrada
 
+def deletar_despesa_por_id(despesa_id:int, db:Session):
+    despesa_encontrada = db.query(Despesa).get(despesa_id)
+    if not despesa_encontrada:
+        raise DespesaException("Despesa não encontrada")
+    db.delete(despesa_encontrada)
+    db.commit()
+    return
