@@ -1,11 +1,9 @@
-from datetime import datetime
-
 from sqlalchemy import and_, Extract
 from sqlalchemy.orm import Session
 
 from app.exception.despesa_exception import DespesaException
-from app.models.receita import Despesa
-from app.schemas.despesa_schema import DespesaCreate
+from app.models.classes_modelos import Despesa
+from app.schemas.despesa_schema import DespesaCreate, Categoria
 
 
 def criar_nova_despesa(despesa:DespesaCreate, db:Session):
@@ -18,7 +16,8 @@ def criar_nova_despesa(despesa:DespesaCreate, db:Session):
     despesa_nova = Despesa(
         descricao = despesa.descricao,
         valor = despesa.valor,
-        data = despesa.data
+        data = despesa.data,
+        categoria = despesa.categoria
     )
     db.add(despesa_nova)
     db.commit()

@@ -1,8 +1,9 @@
 
 
-from sqlalchemy import Column, Integer, String, Numeric, Date
+from sqlalchemy import Column, Integer, String, Numeric, Date, Enum
 
 from app.database import Base
+from app.schemas.despesa_schema import Categoria
 
 
 class Receita(Base):
@@ -22,4 +23,6 @@ class Despesa(Base):
     descricao = Column(String(100), nullable=False)
     valor = Column(Numeric(10,2), nullable=False)
     data = Column(Date, nullable=False)
+    categoria = Column(String, default="outras", nullable=False)
+
 

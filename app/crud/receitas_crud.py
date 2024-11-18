@@ -3,7 +3,7 @@ from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
 from app.exception.receita_exception import ReceitaException
-from app.models.receita import Receita
+from app.models.classes_modelos import Receita
 from app.schemas.receita_schema import ReceitaCreate
 
 

@@ -1,9 +1,12 @@
+from http.client import responses
+
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import get_db, Base
 from app.main import app
+from app.schemas.despesa_schema import Categoria
 
 client = TestClient(app)
 
@@ -70,3 +73,14 @@ def test_deve_retornar_uma_despesa_por_id():
     assert response_two.json()["valor"] == 20000.00
     assert response_two.json()["data"] == "2024-11-13"
 
+def test_deve_retornar_a_categoria_padrao():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    data = {
+        "descricao": "Despesa Teste",
+        "valor": 20000.00,
+        "data": "2024-11-13"
+    }
+    response = client.post("/despesas", json=data)
+    assert response.json()["categoria"] == "outras"
+    assert isinstance(response.json()["categoria"], str)

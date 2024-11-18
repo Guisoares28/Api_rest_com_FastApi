@@ -10,5 +10,6 @@ app = FastAPI()
 
 app.include_router(receita_router, tags=["receita"])
 app.include_router(despesa_router, tags=["despesa"])
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
