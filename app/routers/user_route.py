@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from starlette.responses import JSONResponse
 
 from app.crud.user_crud import UserUseCases
 from app.database import get_db
+from app.depends import token_verifier
 from app.models.classes_modelos import Usuario
 from app.schemas.user_schema import UserResponse, UserCreate
 
@@ -22,5 +24,8 @@ def login(login_request_form: OAuth2PasswordRequestForm = Depends(), db:Session 
         usuario = login_request_form.username,
         senha = login_request_form.password
     )
-    token_data = uc.user_login(user=user)
-    return token_data
+    token = uc.user_login(user=user)
+    return JSONResponse(
+        content=token,
+        status_code= 200
+    )

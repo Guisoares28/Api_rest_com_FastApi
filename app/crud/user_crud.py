@@ -1,4 +1,5 @@
 from datetime import datetime, timezone, timedelta
+from os import access
 
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
@@ -6,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.exception.user_exception import UserException
 from app.models.classes_modelos import Usuario
 from app.schemas.user_schema import UserCreate
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
 
 crypt_context = CryptContext(schemes=['sha256_crypt'])
 
@@ -28,7 +29,7 @@ class UserUseCases:
         self.db.refresh(new_user)
         return new_user
 
-    def user_login(self, user:Usuario, expires_in =  30):
+    def user_login(self, user:Usuario, expires_in: int = 30):
         user_on_db = self.db.query(Usuario).filter_by(usuario=user.usuario).first()
 
         if not user_on_db:
@@ -38,14 +39,23 @@ class UserUseCases:
             raise UserException("Usuario não encontrado")
 
         exp = datetime.now(timezone.utc) + timedelta(minutes=expires_in)
-
+        exp_timestamp = int(exp.timestamp())
         payload = {
             "sub":user.usuario,
-            'exp':exp
+            'exp':exp_timestamp
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+        access_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
         return {
-            "acess_token": token,
-            "exp": exp.isoformat()
+            "access_token": access_token,
+            "exp": exp_timestamp
         }
+
+    def verify_token(self, access_token):
+        try:
+            data = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
+            return data
+        except ExpiredSignatureError:
+            raise UserException("Token expirado")
+        except JWTError:
+            raise UserException("Token inválido")
