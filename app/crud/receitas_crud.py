@@ -3,7 +3,7 @@ from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
 from app.exception.receita_exception import ReceitaException
-from app.models.classes_modelos import Receita
+from app.models.classes_modelos import Receita, Despesa
 from app.schemas.receita_schema import ReceitaCreate
 
 
@@ -58,4 +58,18 @@ def deletar_receita(receita_id:int, db:Session):
     db.delete(receita_existente)
     db.commit()
     return receita_existente
+
+def buscar_receita_pela_descricao(receita_descricao, db:Session):
+    receita_encontrada = db.query(Receita).filter_by(descricao=receita_descricao).all()
+    if not receita_encontrada:
+        raise NoResultFound("Receita não encontrada")
+    return receita_encontrada
+
+def buscar_receita_por_mes(receita_ano:int, receita_mes:int, db:Session):
+    receita_encontrada = db.query(Receita).filter(
+        and_(
+     Extract("month", Receita.data) == receita_mes,
+     Extract("year", Receita.data) == receita_ano
+    )).all()
+    return receita_encontrada
 

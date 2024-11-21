@@ -55,3 +55,18 @@ def deletar_despesa_por_id(despesa_id:int, db:Session):
     db.delete(despesa_encontrada)
     db.commit()
     return
+
+def buscar_despesa_por_descricao(despesa_descricao: str, db:Session):
+    despesa_encontrada = db.query(Despesa).filter_by(descricao=despesa_descricao).all()
+    if not despesa_encontrada:
+        raise DespesaException("Despesa não encontrada")
+    return despesa_encontrada
+
+def buscar_despesa_por_mes(mes:int, ano:int, db:Session):
+    despesas_encontradas = db.query(Despesa).filter(
+        and_(
+            Extract("year", Despesa.data) == ano,
+            Extract("month", Despesa.data) == mes
+        )
+    ).all()
+    return despesas_encontradas

@@ -30,11 +30,11 @@ def test_deve_retornar_todas_as_receitas():
         "data": "2024-11-13"
     }
     response = client.post("/receitas", json=data)
-    response = client.get("/receitas")
-    receitas = response.json()
+    response_two = client.get("/receitas/")
+    receitas = response_two.json()
 
-    assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    assert response_two.status_code == 200
+    assert isinstance(response_two.json(), list)
     assert any(data["descricao"] == "Receita teste" for receita in receitas)
 
 

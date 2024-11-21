@@ -73,7 +73,7 @@ def test_deve_retornar_uma_despesa_por_id():
     assert response_two.json()["valor"] == 20000.00
     assert response_two.json()["data"] == "2024-11-13"
 
-def test_deve_retornar_a_categoria_padrao():
+def test_deve_retornar_a_categoria_padrao_caso_nao_seja_informado():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     data = {
@@ -84,3 +84,17 @@ def test_deve_retornar_a_categoria_padrao():
     response = client.post("/despesas", json=data)
     assert response.json()["categoria"] == "outras"
     assert isinstance(response.json()["categoria"], str)
+
+def test_deve_retornar_uma_despesa_pela_descricao():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    data = {
+        "descricao": "Despesa Teste",
+        "valor": 20000.00,
+        "data": "2024-11-13"
+    }
+    response = client.post("/despesas", json=data)
+    descricao = response.json()["descricao"]
+    response_two = client.get(f"/despesas/?despesa_descricao={descricao}")
+    assert response_two.status_code == 200
+    assert response_two.json()[0]["descricao"] == "Despesa Teste"

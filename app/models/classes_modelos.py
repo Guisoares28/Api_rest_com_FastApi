@@ -1,9 +1,9 @@
 
-
-from sqlalchemy import Column, Integer, String, Numeric, Date, Enum
+from sqlalchemy import Column, Integer, String, Numeric, Date, TIMESTAMP
+from sqlalchemy.sql.functions import func
 
 from app.database import Base
-from app.schemas.despesa_schema import Categoria
+
 
 
 class Receita(Base):
@@ -25,4 +25,10 @@ class Despesa(Base):
     data = Column(Date, nullable=False)
     categoria = Column(String, default="outras", nullable=False)
 
+class Usuario(Base):
+    __tablename__ = "usuarios"
 
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    usuario = Column(String(20),unique=True, nullable=False)
+    senha = Column(String, nullable=False)
+    criado_em = Column(TIMESTAMP, server_default=func.now())

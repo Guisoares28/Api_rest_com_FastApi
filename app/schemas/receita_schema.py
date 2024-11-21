@@ -8,7 +8,7 @@ class ReceitaCreate(BaseModel):
     data: date
 
 
-class DespesaResponse(BaseModel):
+class ReceitaResponse(BaseModel):
     id: int
     descricao: str
     valor: float
