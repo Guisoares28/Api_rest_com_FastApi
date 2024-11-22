@@ -29,12 +29,12 @@ def listar_todas_as_despesas(despesa_descricao:str = None ,db:Session = Depends(
     except DespesaException as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@router.get("/buscar/{receita_id}", response_model=DespesaResponse, status_code=200)
-def pegar_despesa_por_id(receita_id:int, db:Session = Depends(get_db)):
+@router.get("/buscar/{despesa_id}", response_model=DespesaResponse, status_code=200)
+def pegar_despesa_por_id(despesa_id:int, db:Session = Depends(get_db)):
     dc = DespesaCrud(db=db)
-    return dc.buscar_despesa_por_id(despesa_id=receita_id)
+    return dc.buscar_despesa_por_id(despesa_id=despesa_id)
 
-@router.put("/atualizar/{receita_id}", response_model=DespesaResponse, status_code=200)
+@router.put("/atualizar/{despesa_id}", response_model=DespesaResponse, status_code=200)
 def atualizar_despesa(despesa_id:int, despesa:DespesaCreate, db:Session = Depends(get_db)):
     dc = DespesaCrud(db=db)
     return dc.atualizar_despesa_por_id(despesa_id=despesa_id, despesa=despesa)
@@ -45,7 +45,7 @@ def deletar_despesa(despesa_id:int, db:Session = Depends(get_db)):
     try:
         return dc.deletar_despesa_por_id(despesa_id=despesa_id)
     except DespesaException as e:
-        HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/buscar_mes/{ano}/{mes}", response_model=list[DespesaResponse], status_code=200)
 def buscar_despesa_por_mes_e_ano(ano:int, mes:int, db:Session = Depends(get_db)):
