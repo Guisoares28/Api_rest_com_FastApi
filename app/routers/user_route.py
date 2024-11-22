@@ -5,7 +5,6 @@ from starlette.responses import JSONResponse
 
 from app.crud.user_crud import UserUseCases
 from app.database import get_db
-from app.depends import token_verifier
 from app.models.classes_modelos import Usuario
 from app.schemas.user_schema import UserResponse, UserCreate
 
