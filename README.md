@@ -48,23 +48,23 @@ Foi desenvolvido como parte do meu estudo prático em **Back-end**, e para a par
 ## 🛠️ **EndPoints da API**
 
 **Despesas**
-*POST* /despesas/criar: Cria uma nova despesa.
-*GET* /despesas/listar/: Lista todas as despesas ou busca por descrição.
-*GET* /despesas/buscar/{despesa_id}: Busca uma despesa por ID.
-*PUT* /despesas/atualizar/{despesa_id}: Atualiza uma despesa existente.
-*DELETE* /despesas/deletar/{despesa_id}: Deleta uma despesa.
-*GET* /despesas/buscar_mes/{ano}/{mes}: Busca despesas de um mês específico.
+- *POST* /despesas/criar: Cria uma nova despesa.
+- *GET* /despesas/listar/: Lista todas as despesas ou busca por descrição.
+- *GET* /despesas/buscar/{despesa_id}: Busca uma despesa por ID.
+- *PUT* /despesas/atualizar/{despesa_id}: Atualiza uma despesa existente.
+- *DELETE* /despesas/deletar/{despesa_id}: Deleta uma despesa.
+- *GET* /despesas/buscar_mes/{ano}/{mes}: Busca despesas de um mês específico.
 
 **Receitas**
-*POST* /receitas/criar: Cria uma nova receita.
-*GET* /receitas/listas/: Lista todas as receitas ou busca por descrição.
-*GET* /receitas/buscar/{receita_id}: Busca uma receita por ID.
-*PUT* /receitas/atualizar/{receita_id}: Atualiza uma receita existente.
-*DELETE* /receitas/deletar/{receita_id}: Deleta uma receita.
-*GET* /receitas/buscar_mes/{ano}/{mes}: Busca receitas de um mês específico.
+- *POST* /receitas/criar: Cria uma nova receita.
+- *GET* /receitas/listas/: Lista todas as receitas ou busca por descrição.
+- *GET* /receitas/buscar/{receita_id}: Busca uma receita por ID.
+- *PUT* /receitas/atualizar/{receita_id}: Atualiza uma receita existente.
+- *DELETE* /receitas/deletar/{receita_id}: Deleta uma receita.
+- *GET* /receitas/buscar_mes/{ano}/{mes}: Busca receitas de um mês específico.
 
 **Resumo**
-*GET* /resumo/{ano}/{mes}: Obtém um resumo financeiro do mês, somando receitas e despesas.
+- *GET* /resumo/{ano}/{mes}: Obtém um resumo financeiro do mês, somando receitas e despesas.
 
 ## 🔑 **Autenticação JWT**
 Para acessar as rotas protegidas, é necessário um token JWT.
