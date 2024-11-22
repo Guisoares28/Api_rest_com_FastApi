@@ -10,8 +10,6 @@ from app.routers.user_route import router as user_router
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
-
 app.include_router(receita_router, tags=["receita"])
 app.include_router(despesa_router, tags=["despesa"])
 app.include_router(resumo_router, tags=["resumo"])
