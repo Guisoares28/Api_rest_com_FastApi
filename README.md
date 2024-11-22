@@ -47,7 +47,7 @@ Foi desenvolvido como parte do meu estudo prático em **Back-end**, e para a par
 
 ## 🛠️ **EndPoints da API**
 
-#**Despesas**
+**Despesas**
 *POST* /despesas/criar: Cria uma nova despesa.
 *GET* /despesas/listar/: Lista todas as despesas ou busca por descrição.
 *GET* /despesas/buscar/{despesa_id}: Busca uma despesa por ID.
@@ -55,7 +55,7 @@ Foi desenvolvido como parte do meu estudo prático em **Back-end**, e para a par
 *DELETE* /despesas/deletar/{despesa_id}: Deleta uma despesa.
 *GET* /despesas/buscar_mes/{ano}/{mes}: Busca despesas de um mês específico.
 
-#**Receitas**
+**Receitas**
 *POST* /receitas/criar: Cria uma nova receita.
 *GET* /receitas/listas/: Lista todas as receitas ou busca por descrição.
 *GET* /receitas/buscar/{receita_id}: Busca uma receita por ID.
@@ -63,14 +63,14 @@ Foi desenvolvido como parte do meu estudo prático em **Back-end**, e para a par
 *DELETE* /receitas/deletar/{receita_id}: Deleta uma receita.
 *GET* /receitas/buscar_mes/{ano}/{mes}: Busca receitas de um mês específico.
 
-#**Resumo**
+**Resumo**
 *GET* /resumo/{ano}/{mes}: Obtém um resumo financeiro do mês, somando receitas e despesas.
 
-##🔑 **Autenticação JWT**
+## 🔑 **Autenticação JWT**
 Para acessar as rotas protegidas, é necessário um token JWT.
 Utilize as credenciais para obter o token e passá-lo no cabeçalho das requisições:
 
 Authorization: Bearer <seu_token_jwt>
 
-##📈 **Objetivo do Projeto**
+## 📈 **Objetivo do Projeto**
 Este projeto tem como principal objetivo consolidar meus conhecimentos em desenvolvimento Back-end, particularmente no uso de FastAPI, SQLAlchemy, PostgreSQL e JWT. Além disso, visa me preparar para desafios práticos, como o Challenger-Alura, com um sistema real de gerenciamento financeiro.
